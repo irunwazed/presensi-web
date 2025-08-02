@@ -1,0 +1,271 @@
+<style is:inline>
+   <style>
+      table.table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+      }
+      .table th,
+      .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      .table th {
+        background-color: #f2f2f2;
+      }
+      .pagination {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      
+    </style>
+</style>
+
+<div class="flex justify-center">
+  <div class="w-full  p-4 border-1 border-slate-600 min-h-screen">
+    <div class="flex justify-center mb-4">
+      <!-- <h3 class="font-bold text-xl">Dana Bersama</h3> -->
+    </div>
+
+    <button onclick="window.history.back();"> Kembali </button>
+
+    <div class="mt-12">
+      <div class="flex justify-center">
+        <form action="" method="get">
+          <select
+            name="year"
+            class="w-full border-1 py-2 px-2 rounded-lg"
+            onchange="go()"
+          >
+            <option value="">-= Pilih Tahun =-</option>
+          </select>
+        </form>
+      </div>
+      <div class="mt-4">
+        <table class="">
+          <tr>
+            <td style="width: 140px;">Pendapatan</td>
+            <td style="width: 10px;">:</td>
+            <td id="pendapatan"></td>
+          </tr>
+          <tr>
+            <td>Pengeluaran</td>
+            <td>:</td>
+            <td id="pengeluaran"></td>
+          </tr>
+          <tr>
+            <td>Sisa</td>
+            <td>:</td>
+            <td id="sisa"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="overflow-x-scroll mt-4">
+        <table class="table">
+          <thead>
+            <tr id="table-header">
+              <!-- Header will be populated dynamically -->
+            </tr>
+          </thead>
+          <tbody id="table-body" class="text-[14px]">
+            <!-- Data rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script is:inline>
+  const queryString = window.location.search;
+  const params = new URLSearchParams(queryString);
+  const pendapatan = document.getElementById("pendapatan");
+  const pengeluaran = document.getElementById("pengeluaran");
+  const sisa = document.getElementById("sisa");
+
+  const formYear = document.querySelector("select[name='year']");
+
+  const formSave = document.querySelector("button[type='submit']");
+
+  const form = document.getElementById("form-transaction");
+  const BASE_URL = "https://irunwazed.web.id/kasku";
+  var name = "";
+  var action = "insert";
+  var dataShow = [];
+
+  const checkUser = () => {
+    const name_check = params.get("name");
+    if (name_check == "irun" || name_check == "dwi") {
+      name = name_check;
+    } else {
+      window.location.href = `./portal.html`;
+    }
+  };
+
+  const initRekap = () => {
+    // checkUser();
+
+    const name_check = params.get("name");
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    for (let i = year - 1; i <= year + 1; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = i;
+      formYear.appendChild(option);
+    }
+    formYear.value = parseInt(params.get("tahun"));
+
+    getRekapTahunan(params.get("tahun"));
+
+
+    // getRekapTahunan(2025);
+  };
+
+  initRekap();
+
+  function go() {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const name_check = params.get("name");
+    if (
+      parseInt(formYear.value) != parseInt(params.get("tahun")) &&
+      formYear.value != undefined
+    ) {
+      window.location.href = `?name=${name_check}&tahun=` + formYear.value;
+    }
+  }
+
+  function formatKode(kode) {
+    if (kode.length === 5) {
+      return `${kode[0]}.${kode.slice(1, 3)}.${kode.slice(3, 5)}`;
+    } else if (kode.length === 3) {
+      return `${kode[0]}.${kode.slice(1, 3)}`;
+    } else {
+      return kode; // Bisa juga throw error jika perlu
+    }
+  }
+
+  function formatRupiah(subject) {
+    (subject = subject
+      .toString()
+      .replace(/[^,\d]/g, "")
+      .toString()),
+      (rupiah = subject.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
+    return `${rupiah}`;
+  }
+
+  function parseRupiah(rupiahStr) {
+    return parseInt(rupiahStr.replace(/\./g, ""), 10);
+  }
+
+  let currentPage = 1;
+  const limit = 5;
+  let totalPages = 1;
+
+  function renderTable(data) {
+    const tableBody = document.getElementById("table-body");
+    const tableHeader = document.getElementById("table-header");
+    tableBody.innerHTML = "";
+    tableHeader.innerHTML = "";
+
+    pendapatan.innerHTML = formatRupiah(data.meta.pendapatan);
+    pengeluaran.innerHTML = formatRupiah(data.meta.pengeluaran);
+    const sisaAll = parseInt(
+      parseInt(data.meta.pendapatan) - parseInt(data.meta.pengeluaran)
+    );
+    let point = "";
+    if (sisaAll < 0) {
+      point = "- ";
+    }
+    sisa.innerHTML = point + formatRupiah(sisaAll);
+
+    if (data.data.length === 0) {
+      tableBody.innerHTML = "<tr><td colspan='8'>No data available</td></tr>";
+      return;
+    }
+
+    // Tambahkan kolom "No"
+    const headers = [
+      "code_type",
+      "type_name",
+      "bulan_1",
+      "bulan_2",
+      "bulan_3",
+      "bulan_4",
+      "bulan_5",
+      "bulan_6",
+      "bulan_7",
+      "bulan_8",
+      "bulan_9",
+      "bulan_10",
+      "bulan_11",
+      "bulan_12",
+    ];
+
+    const header_name = {
+      code_type: "Kode",
+      type: "Jenis",
+    };
+
+    // Render header
+
+    headers.forEach((key) => {
+      const th = document.createElement("th");
+      th.textContent = header_name[key] || key;
+      tableHeader.appendChild(th);
+    });
+
+    // Render data rows
+    data.data.forEach((item, index) => {
+      const tr = document.createElement("tr");
+      if (item["code_type"] == "4" || item["code_type"] == "5") {
+        tr.style.backgroundColor = "lightblue";
+        tr.style.fontWeight = "bold";
+      }
+      console.log(`item["code_type"].toString().length`, item["code_type"].toString())
+      if (item["code_type"].toString()[0] == "5" && item["code_type"].toString().length == 3) {
+        tr.style.backgroundColor = "#CCCCCC";
+        tr.style.fontWeight = "bold";
+      }
+      headers.forEach((key) => {
+        const td = document.createElement("td");
+        if (key.includes("bulan")) {
+          point = "";
+          if (parseInt(item[key]) < 0) {
+            point = "- ";
+          }
+          td.innerHTML = `<div class="flex justify-end">${
+            point + formatRupiah(parseFloat(item[key]), "")
+          }</div>`;
+        } else if (key === "code_type") {
+          td.textContent = formatKode(item[key]);
+        } else {
+          td.textContent = item[key];
+        }
+        tr.appendChild(td);
+      });
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function getRekapTahunan(tahun = 2025) {
+    fetch(`/api/rekap?tahun=${tahun}`)
+      .then((res) => res.json())
+      .then((response) => {
+        dataShow = response.data;
+        console.log("dataShow", response)
+        renderTable(response);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+</script>

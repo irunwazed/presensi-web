@@ -1,43 +1,18 @@
 ---
-import { createClient } from "@supabase/supabase-js";
-
-interface Type {
-  id: number,
-  code_type: number,
-  name: string
-}
-
-const supabase = createClient(
-  import.meta.env.SUPABASE_URL,
-  import.meta.env.SUPABASE_ANON_KEY,
-  {
-    db: { schema: "keuangan" },
-  }
-);
+import { getRekapTahunan, getTransaction, getType, type Type } from "../pages/api/repo/transaction"
 
 
 
-async function getType() {
-  const { data: dataType, error:errorType } = await supabase.from("type").select();
-  return dataType
-}
 
-async function getTransaction(page:number, pageSize:number){
-  const from = (page - 1) * pageSize;
-  const to = from + pageSize - 1;
-  const { data: dataTrx, error: errorTrx } = await supabase
-    .from("transaction")
-    .select("*", { count: "exact" }) // count bisa berguna untuk total halaman
-    .range(from, to)
-    .order("created_at", { ascending: false });
 
-  return dataTrx
-}
-
-const page = 2;
-const pageSize = 10;
-const dataTrx = await getTransaction(page, pageSize);
+// const page = 2;
+// const pageSize = 10;
+// const dataTrx =  await getTransaction(page, pageSize);
 const dataType = await getType()
+
+// const rekap = await getRekapTahunan(2025)
+
+// console.log("rekap", rekap)
 ---
 
 <!-- Header -->
@@ -70,12 +45,21 @@ const dataType = await getType()
 <section class="container mx-auto mt-6 p-4 bg-white rounded shadow-md">
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-lg font-semibold">Daftar Transaksi</h2>
-    <button
+   <div>
+     <button
       onclick="openModal('modalTambah')"
       class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
     >
       + Tambah Transaksi
     </button>
+
+     <a
+      href="/rekap?tahun=2025"
+      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+    >
+      Rekap
+  </a>
+   </div>
   </div>
   <div class="overflow-x-auto">
     <table class="min-w-full table-auto">
