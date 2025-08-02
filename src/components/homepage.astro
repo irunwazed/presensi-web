@@ -1,65 +1,277 @@
+---
+import { createClient } from "@supabase/supabase-js";
 
-  <!-- Header -->
-  <header class="bg-blue-600 text-white p-4 shadow-md">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold">Aplikasi Kas Keuangan TES</h1>
-    </div>
-  </header>
+interface Type {
+  id: number,
+  code_type: number,
+  name: string
+}
 
-  <!-- Ringkasan Saldo -->
-  <section class="container mx-auto mt-6 p-4 bg-white rounded shadow-md">
-    <h2 class="text-lg font-semibold mb-4">Ringkasan Saldo</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="p-4 bg-green-100 text-green-700 rounded">
-        <p class="text-sm">Total Pemasukan</p>
-        <p class="text-2xl font-bold">Rp 5.000.000</p>
-      </div>
-      <div class="p-4 bg-red-100 text-red-700 rounded">
-        <p class="text-sm">Total Pengeluaran</p>
-        <p class="text-2xl font-bold">Rp 2.000.000</p>
-      </div>
-      <div class="p-4 bg-blue-100 text-blue-700 rounded">
-        <p class="text-sm">Saldo Akhir</p>
-        <p class="text-2xl font-bold">Rp 3.000.000</p>
-      </div>
-    </div>
-  </section>
+const supabase = createClient(
+  import.meta.env.SUPABASE_URL,
+  import.meta.env.SUPABASE_ANON_KEY,
+  {
+    db: { schema: "keuangan" },
+  }
+);
 
-  <!-- Tabel Transaksi -->
-  <section class="container mx-auto mt-6 p-4 bg-white rounded shadow-md">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg font-semibold">Daftar Transaksi</h2>
-      <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        + Tambah Transaksi
-      </button>
+
+
+async function getType() {
+  const { data: dataType, error:errorType } = await supabase.from("type").select();
+  return dataType
+}
+
+async function getTransaction(page:number, pageSize:number){
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+  const { data: dataTrx, error: errorTrx } = await supabase
+    .from("transaction")
+    .select("*", { count: "exact" }) // count bisa berguna untuk total halaman
+    .range(from, to)
+    .order("created_at", { ascending: false });
+
+  return dataTrx
+}
+
+const page = 2;
+const pageSize = 10;
+const dataTrx = await getTransaction(page, pageSize);
+const dataType = await getType()
+---
+
+<!-- Header -->
+<header class="bg-blue-600 text-white p-4 shadow-md">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-xl font-bold">Aplikasi Kas Keuangan</h1>
+  </div>
+</header>
+
+<!-- Ringkasan Saldo -->
+<section class="container mx-auto mt-6 p-4 bg-white rounded shadow-md">
+  <h2 class="text-lg font-semibold mb-4">Ringkasan Saldo</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="p-4 bg-green-100 text-green-700 rounded">
+      <p class="text-sm">Total Pemasukan</p>
+      <p class="text-2xl font-bold">Rp 5.000.000</p>
     </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full table-auto">
-        <thead class="bg-gray-200 text-gray-600 uppercase text-sm">
-          <tr>
-            <th class="py-2 px-4 text-left">Tanggal</th>
-            <th class="py-2 px-4 text-left">Keterangan</th>
-            <th class="py-2 px-4 text-left">Kategori</th>
-            <th class="py-2 px-4 text-left">Jumlah</th>
-            <th class="py-2 px-4 text-left">Tipe</th>
-          </tr>
-        </thead>
-        <tbody class="text-gray-700">
-          <tr class="border-b">
-            <td class="py-2 px-4">01-08-2025</td>
-            <td class="py-2 px-4">Gaji Bulanan</td>
-            <td class="py-2 px-4">Pemasukan</td>
-            <td class="py-2 px-4">Rp 5.000.000</td>
-            <td class="py-2 px-4 text-green-600">Masuk</td>
-          </tr>
-          <tr class="border-b">
-            <td class="py-2 px-4">02-08-2025</td>
-            <td class="py-2 px-4">Belanja Bulanan</td>
-            <td class="py-2 px-4">Pengeluaran</td>
-            <td class="py-2 px-4">Rp 2.000.000</td>
-            <td class="py-2 px-4 text-red-600">Keluar</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="p-4 bg-red-100 text-red-700 rounded">
+      <p class="text-sm">Total Pengeluaran</p>
+      <p class="text-2xl font-bold">Rp 2.000.000</p>
     </div>
-  </section>
+    <div class="p-4 bg-blue-100 text-blue-700 rounded">
+      <p class="text-sm">Saldo Akhir</p>
+      <p class="text-2xl font-bold">Rp 3.000.000</p>
+    </div>
+  </div>
+</section>
+
+<!-- Tabel Transaksi -->
+<section class="container mx-auto mt-6 p-4 bg-white rounded shadow-md">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-lg font-semibold">Daftar Transaksi</h2>
+    <button
+      onclick="openModal('modalTambah')"
+      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+    >
+      + Tambah Transaksi
+    </button>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto">
+      <thead class="bg-gray-200 text-gray-600 uppercase text-sm">
+        <tr>
+          <th class="py-2 px-4 text-left">Tanggal</th>
+          <th class="py-2 px-4 text-left">Keterangan</th>
+          <th class="py-2 px-4 text-left">Kategori</th>
+          <th class="py-2 px-4 text-left">Jumlah</th>
+          <th class="py-2 px-4 text-left">Tipe</th>
+          <th class="py-2 px-4 text-left">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-700">
+        <tr class="border-b">
+          <td class="py-2 px-4">01-08-2025</td>
+          <td class="py-2 px-4">Gaji Bulanan</td>
+          <td class="py-2 px-4">Pemasukan</td>
+          <td class="py-2 px-4">Rp 5.000.000</td>
+          <td class="py-2 px-4 text-green-600">Masuk</td>
+          <td class="py-2 px-4">
+            <button
+              onclick="openModal('modalEdit')"
+              class="text-blue-600 hover:underline">Edit</button
+            >
+          </td>
+        </tr>
+        <tr class="border-b">
+          <td class="py-2 px-4">02-08-2025</td>
+          <td class="py-2 px-4">Belanja Bulanan</td>
+          <td class="py-2 px-4">Pengeluaran</td>
+          <td class="py-2 px-4">Rp 2.000.000</td>
+          <td class="py-2 px-4 text-red-600">Keluar</td>
+          <td class="py-2 px-4">
+            <button
+              onclick="openModal('modalEdit')"
+              class="text-blue-600 hover:underline">Edit</button
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal Tambah -->
+<div
+  id="modalTambah"
+  class="fixed inset-0 items-center justify-center hidden z-50 backdrop-blur-sm bg-white/30 transition-opacity duration-300"
+>
+  <div
+    id="modalTambahContent"
+    class="bg-white rounded w-full max-w-md shadow-lg transform scale-95 opacity-0 transition-all duration-300"
+  >
+    <div class="bg-white p-6 rounded w-full max-w-md shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Tambah Transaksi</h3>
+      <form>
+        <div class="mb-2">
+          <label class="block text-sm">Tanggal</label>
+          <input type="date" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Keterangan</label>
+          <input type="text" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Kategori</label>
+          <select class="w-full border rounded px-3 py-2">
+            {
+              dataType?.map((value: Type) => (
+                <option value={value.code_type}>{value.code_type} - {value.name}</option>
+              ))
+            }
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Jumlah</label>
+          <input type="number" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div class="flex justify-end mt-4 space-x-2">
+          <button
+            type="button"
+            onclick="closeModal('modalTambah')"
+            class="px-4 py-2 bg-gray-300 rounded">Batal</button
+          >
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >Simpan</button
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit -->
+<div
+  id="modalEdit"
+  class="fixed inset-0 items-center justify-center hidden z-50 backdrop-blur-sm bg-white/30 transition-opacity duration-300"
+>
+  <div
+    id="modalEditContent"
+    class="bg-white rounded w-full max-w-md shadow-lg transform scale-95 opacity-0 transition-all duration-300"
+  >
+    <div class="bg-white p-6 rounded w-full max-w-md shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Edit Transaksi</h3>
+      <form>
+        <div class="mb-2">
+          <label class="block text-sm">Tanggal</label>
+          <input
+            type="date"
+            class="w-full border rounded px-3 py-2"
+            value="2025-08-01"
+          />
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Keterangan</label>
+          <input
+            type="text"
+            class="w-full border rounded px-3 py-2"
+            value="Gaji Bulanan"
+          />
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Kategori</label>
+          <select class="w-full border rounded px-3 py-2">
+            {
+              dataType?.map((value: Type) => (
+                <option value={value.code_type}>{value.code_type} - {value.name}</option>
+              ))
+            }
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm">Jumlah</label>
+          <input
+            type="number"
+            class="w-full border rounded px-3 py-2"
+            value="5000000"
+          />
+        </div>
+        <div class="flex justify-end mt-4 space-x-2">
+          <button
+            type="button"
+            onclick="closeModal('modalEdit')"
+            class="px-4 py-2 bg-gray-300 rounded">Batal</button
+          >
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >Update</button
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Script Modal -->
+<script is:inline>
+  const modalAdd = document.getElementById("modalTambah");
+  const modalUpdate = document.getElementById("modalEdit");
+
+  function init() {
+    modalAdd.classList.add("hidden");
+    modalAdd.classList.remove("flex");
+  }
+
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    const content = document.getElementById(id + "Content");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    // Trigger reflow untuk memastikan transisi berjalan
+    void content.offsetWidth;
+
+    content.classList.remove("scale-95", "opacity-0");
+    content.classList.add("scale-100", "opacity-100");
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    const content = document.getElementById(id + "Content");
+
+    content.classList.remove("scale-100", "opacity-100");
+    content.classList.add("scale-95", "opacity-0");
+
+    // Tunggu animasi selesai sebelum menyembunyikan modal
+    setTimeout(() => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }, 300); // Durasi sesuai `duration-300`
+  }
+
+  init();
+</script>
