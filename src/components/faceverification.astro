@@ -1,0 +1,33 @@
+<form action="" method="post">
+    <input type="file" name="image" id="image" />
+</form>
+<img id="preview" style="max-width:300px;display:none;" />
+<div id="base64"></div>
+
+<script>
+    function handleImageUpload(
+        inputId: string,
+        previewId: string,
+        base64Id: string,
+    ) {
+        const input = document.getElementById(inputId) as HTMLInputElement;
+        const preview = document.getElementById(previewId) as HTMLImageElement;
+        const base64Elem = document.getElementById(base64Id) as HTMLDivElement;
+
+        input?.addEventListener("change", function (e: any) {
+            const file = e?.target?.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                const base64 = evt?.target?.result;
+                preview.src = base64?.toString() || "";
+                preview.style.display = "block";
+                base64Elem.textContent = base64?.toString() || "";
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    handleImageUpload("image", "preview", "base64");
+</script>

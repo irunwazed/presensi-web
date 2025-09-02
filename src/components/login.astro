@@ -1,0 +1,66 @@
+<div>
+    <form action="" method="post" id="form-login">
+        <input type="text" name="username" />
+        <br />
+        <input type="text" name="password" />
+        <br />
+        <input type="text" name="totp" />
+        <br />
+        <br />
+        <input type="submit" value="Masuk" />
+    </form>
+</div>
+
+<script>
+    import { saveProfile } from "../lib/storage";
+    import { serviceLogin, serviceProfile } from "../services/bkn";
+    import Swal from "sweetalert2";
+
+    const form = document.getElementById("form-login") as HTMLFormElement;
+    const username = document.querySelector(
+        'input[name="username"]',
+    ) as HTMLInputElement;
+    const password = document.querySelector(
+        'input[name="password"]',
+    ) as HTMLInputElement;
+    const totp = document.querySelector(
+        'input[name="totp"]',
+    ) as HTMLInputElement;
+
+    form.addEventListener("submit", async (e) => {
+        console.log("tes");
+        e.preventDefault();
+        const check = await serviceLogin(
+            username.value,
+            password.value,
+            totp.value,
+        );
+        if (check.status) {
+            const data = await serviceProfile(username.value);
+            saveProfile(
+                data?.data?.nip,
+                data?.data?.nama,
+                data?.data?.jabatan,
+                parseInt(data?.data?.radius),
+                parseInt(data?.data?.radiusWFH),
+            );
+
+            Swal.fire({
+                title: "Berhasil",
+                text: check.message,
+                icon: "success",
+            });
+
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
+
+        } else {
+            Swal.fire({
+                title: "Gagal",
+                text: check.message,
+                icon: "error",
+            });
+        }
+    });
+</script>

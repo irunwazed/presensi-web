@@ -1,0 +1,76 @@
+<input type="file" id="fileInput" accept="image/*" />
+<br />
+<textarea id="base64Output" rows="10" cols="60" readonly></textarea>
+<br />
+<img id="preview" alt="Preview Image" />
+
+<button id="btn-face">kirim</button>
+
+<script>
+import { serviceFaceverification } from "../services/bkn";
+// Import SweetAlert2
+import Swal from 'sweetalert2';
+
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    const preview = document.getElementById("preview") as HTMLImageElement;
+    const base64Output = document.getElementById(
+        "base64Output",
+    ) as HTMLTextAreaElement;
+    const btnFace = document.getElementById("btn-face") as HTMLButtonElement;
+
+    fileInput.addEventListener("change", (event: any) => {
+        const file = event?.target?.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const img = new Image();
+            img.onload = function () {
+                const canvas = document.createElement("canvas");
+                canvas.width = 450;
+                canvas.height = 600;
+
+                const ctx = canvas.getContext("2d");
+                ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                const dataURL = canvas.toDataURL("image/jpeg", 0.8);
+
+                preview.src = dataURL;
+                preview.width = 450;
+                preview.height = 600;
+
+                // ambil base64 pure (buang prefix data:image/jpeg;base64,)
+                const base64 = dataURL.split(",")[1];
+
+                base64Output.value = "data:image/jpeg;base64," + base64;
+            };
+            img.src = e?.target?.result?.toString() ?? "";
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+
+    btnFace.addEventListener("click", async () => {
+        if(base64Output.value == "" ){
+            alert("kosong")
+            return
+        }
+
+        const face = await serviceFaceverification(base64Output.value)
+        console.log("face", face)
+        if(!face.status){
+            
+            Swal.fire({
+                title: "Gagal",
+                text: face.message,
+                icon: "success",
+            });
+            return
+        }
+
+        
+
+    })
+</script>

@@ -1,0 +1,21 @@
+<div>
+    <ul>
+        <li></li>
+    </ul>
+</div>
+
+<script>
+    import { getAddress, getPosisi } from "../lib/map";
+import { servicePresensi } from "../services/bkn";
+
+    // const posisi = getPosisi();
+    // console.log("posisi", posisi);
+
+    // const add = await getAddress(posisi.pos.lat, posisi.pos.lng)
+    // console.log("add", add);
+
+    const data = await servicePresensi()
+    console.log("data", data)
+
+    // Jl. SMA Negeri 14 No.26, RT.3/RW.1, Cililitan, Kec. Kramat jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13640
+</script>

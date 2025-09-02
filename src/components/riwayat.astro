@@ -1,0 +1,75 @@
+<div>
+  <h3>Riwayat</h3>
+  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+    <thead>
+      <tr>
+        <th>Device</th>
+        <th>Tanggal</th>
+        <th>Jam</th>
+        <th>Device</th>
+        <th>WF</th>
+        <th>Check</th>
+      </tr>
+    </thead>
+    <tbody id="riwayat-list">
+      <tr><td colspan="6">Loading...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  import { serviceRiwayat } from '../services/bkn.js'; // pastikan path dan ekstensi sesuai
+
+  async function loadRiwayat() {
+    const tbody = document.getElementById('riwayat-list') as HTMLBodyElement;
+    tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+
+    try {
+      const riwayat = await serviceRiwayat();
+      const data = riwayat.data || [];
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6">Tidak ada data</td></tr>';
+      } else {
+        tbody.innerHTML = ''; // clear loading
+        data.forEach(item => {
+          const tr = document.createElement('tr');
+
+          // Buat masing-masing <td> sesuai kolom
+          const tdDevice1 = document.createElement('td');
+          tdDevice1.textContent = item.device || '-';
+
+          const tdTanggal = document.createElement('td');
+          tdTanggal.textContent = item.itgl || '-';
+
+          const tdJam = document.createElement('td');
+          tdJam.textContent = item.jam || '-';
+
+          const tdDevice2 = document.createElement('td');
+          tdDevice2.textContent = item.device || '-'; // kalau ada device kedua
+
+          const tdWF = document.createElement('td');
+          tdWF.textContent = item.WF || '-';
+
+          const tdCheck = document.createElement('td');
+          tdCheck.textContent = item.check || '-';
+
+          // Append semua <td> ke <tr>
+          tr.appendChild(tdDevice1);
+          tr.appendChild(tdTanggal);
+          tr.appendChild(tdJam);
+          tr.appendChild(tdDevice2);
+          tr.appendChild(tdWF);
+          tr.appendChild(tdCheck);
+
+          tbody.appendChild(tr);
+        });
+      }
+    } catch (error) {
+      tbody.innerHTML = '<tr><td colspan="6">Gagal memuat data.</td></tr>';
+      console.error(error);
+    }
+  }
+
+  loadRiwayat();
+</script>
