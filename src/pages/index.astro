@@ -1,11 +1,62 @@
-<!DOCTYPE html>
+---
+import Faceverification from "../components/faceverification.astro";
+import ImageValid from "../components/image-valid.astro";
+import Login from "../components/login.astro";
+import Presensi from "../components/presensi.astro";
+import Resume from "../components/resume.astro";
+import Riwayat from "../components/riwayat.astro";
+import "../styles/global.css";
+import { getCookie } from "../lib/storage";
+---
+
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    hellp
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="flex justify-center min-h-screen">
+            <div class="w-full sm:w-[640px] sm:border-x-2 sm:border-slate-800">
+                <div id="screen-not-login" class="hidden">
+                    <Login />
+                </div>
+                <div id="screen-login" class="hidden">
+                    <hr />
+                    <Resume />
+                    <hr />
+                    <Riwayat />
+                    <hr />
+                    <ImageValid />
+                    <hr />
+                    <Faceverification />
+                    <hr />
+                    <Presensi />
+                </div>
+            </div>
+        </div>
+
+        <script>
+            import { getCookie, getProfile } from "../lib/storage";
+
+            const screenLogin = document.getElementById(
+                "screen-login",
+            ) as HTMLDivElement;
+            const screenNotLogin = document.getElementById(
+                "screen-not-login",
+            ) as HTMLDivElement;
+
+            const check = getCookie("token");
+            console.log("check", check);
+
+            if (!check) {
+                screenNotLogin.classList.remove("hidden");
+            } else {
+                screenLogin.classList.remove("hidden");
+            }
+            const profile = getProfile()
+            console.log("profile", profile)
+        </script>
+    </body>
 </html>
