@@ -249,16 +249,16 @@ routes.set('POST:/presensi', async (req) => {
 
     console.log("payload", payload)
 
-    // const data:any = await requestPost(API_URL + "/absensi", payload, "lbp_presence="+bearerToken)
-    // if(data?.status != '1'){
-    //     return HTTPResponse({
-    //         status: 400, message: data?.message || "Bad Request"
-    //     })
-    // }
+    const data:any = await requestPost(API_URL + "/absensi", payload, "lbp_presence="+bearerToken)
+    if(data?.status != '1'){
+        return HTTPResponse({
+            status: 400, message: data?.message || "Bad Request"
+        })
+    }
 
 
     return HTTPResponse({
-        status: 200, message: "Berhasil get data", data: ""
+        status: 200, message: "Berhasil get data", data: {}
     })
 });
 

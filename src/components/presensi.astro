@@ -2,20 +2,18 @@
     <ul>
         <li></li>
     </ul>
+    <button id="btn-presensi">Presenis</button>
 </div>
 
 <script>
-    import { getAddress, getPosisi } from "../lib/map";
-import { servicePresensi } from "../services/bkn";
+    import { servicePresensi } from "../services/bkn";
 
-    // const posisi = getPosisi();
-    // console.log("posisi", posisi);
+    const btnPresensi = document.getElementById("btn-presensi") as HTMLButtonElement
 
-    // const add = await getAddress(posisi.pos.lat, posisi.pos.lng)
-    // console.log("add", add);
+    btnPresensi.addEventListener("click", async () => {
 
-    const data = await servicePresensi()
-    console.log("data", data)
+        const data = await servicePresensi();
+        console.log("data", data);
+    })
 
-    // Jl. SMA Negeri 14 No.26, RT.3/RW.1, Cililitan, Kec. Kramat jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13640
 </script>
