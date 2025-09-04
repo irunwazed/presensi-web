@@ -23,7 +23,18 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "24069PC21G",
             phProduct: "peridot_global",
-        }
+        },
+        {
+            name:"RIEVKY ARDIKA PUTRA, S.Kom",
+            username: "199012072022031003",
+            password: "0248443792Myasn",
+            token: "df491591ummrle8v912vvmbdcbnrmmom",
+            phId: "605484158e9b96c0",
+            phType: "GSM",
+            phManufacturer: "Xiaomi",
+            phModel: "22021211RG",
+            phProduct: "munch_id",
+        },
     ]
 
     for(let i = 0; i < accounts.length; i++){
