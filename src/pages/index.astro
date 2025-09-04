@@ -23,16 +23,22 @@ import { getCookie } from "../lib/storage";
                     <Login />
                 </div>
                 <div id="screen-login" class="hidden">
-                    <hr />
-                    <Resume />
-                    <hr />
-                    <Riwayat />
-                    <hr />
-                    <ImageValid />
-                    <hr />
-                    <Faceverification />
-                    <hr />
-                    <Presensi />
+                    <div class="flex flex-col">
+                        <hr />
+                        <Resume />
+                        <br>
+                        <br>
+                        <hr />
+                        <ImageValid />
+                        <br>
+                        <br>
+                        <hr />
+                        <Presensi />
+                        <br>
+                        <br>
+                        <hr />
+                        <Riwayat />
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,8 +61,8 @@ import { getCookie } from "../lib/storage";
             } else {
                 screenLogin.classList.remove("hidden");
             }
-            const profile = getProfile()
-            console.log("profile", profile)
+            const profile = getProfile();
+            console.log("profile", profile);
         </script>
     </body>
 </html>

@@ -1,15 +1,14 @@
 <input type="file" id="fileInput" accept="image/*" />
 <br />
-<textarea id="base64Output" rows="10" cols="60" readonly></textarea>
+<textarea id="base64Output" class="hidden" rows="10" cols="60" readonly></textarea>
 <br />
 <img id="preview" alt="Preview Image" />
 
-<button id="btn-face">kirim</button>
+<button id="btn-face" class="py-2 px-4 bg-orange-700 text-orange-50 rounded-md hover:opacity-85">kirim</button>
 
 <script>
-import { serviceFaceverification } from "../services/bkn";
-// Import SweetAlert2
-import Swal from 'sweetalert2';
+    import { serviceFaceverification } from "../services/bkn";
+    import Swal from "sweetalert2";
 
     const fileInput = document.getElementById("fileInput") as HTMLInputElement;
     const preview = document.getElementById("preview") as HTMLImageElement;
@@ -51,26 +50,48 @@ import Swal from 'sweetalert2';
         reader.readAsDataURL(file);
     });
 
-
     btnFace.addEventListener("click", async () => {
-        if(base64Output.value == "" ){
-            alert("kosong")
-            return
+        if (base64Output.value == "") {
+            alert("kosong");
+            return;
         }
 
-        const face = await serviceFaceverification(base64Output.value)
-        console.log("face", face)
-        if(!face.status){
-            
+        Swal.fire({
+            title: "Memproses...",
+            text: "Mohon tunggu sebentar",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        try {
+            const face = await serviceFaceverification(base64Output.value);
+
+            // Tutup loading
+            Swal.close();
+
+            if (!face.status) {
+                Swal.fire({
+                    title: "Gagal",
+                    text: face.message || "Verifikasi wajah gagal",
+                    icon: "error",
+                });
+            } else {
+                Swal.fire({
+                    title: "Sukses",
+                    text: "Berhasil verifikasi wajah",
+                    icon: "success",
+                });
+            }
+        } catch (error) {
+            Swal.close();
             Swal.fire({
-                title: "Gagal",
-                text: face.message,
-                icon: "success",
+                title: "Terjadi Kesalahan",
+                text: "Gagal memproses verifikasi wajah",
+                icon: "error",
             });
-            return
+            console.error(error);
         }
-
-        
-
-    })
+    });
 </script>
