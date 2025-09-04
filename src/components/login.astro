@@ -28,15 +28,15 @@
   </form>
 </div>
 
-<script type="module">
+<script>
   import { saveProfile } from "../lib/storage";
   import { serviceLogin, serviceProfile } from "../services/bkn";
   import Swal from "sweetalert2";
 
-  const form = document.getElementById("form-login");
-  const username = document.querySelector('input[name="username"]');
-  const password = document.querySelector('input[name="password"]');
-  const totp = document.querySelector('input[name="totp"]');
+  const form = document.getElementById("form-login") as HTMLFormElement;
+  const username = document.querySelector('input[name="username"]') as HTMLInputElement;
+  const password = document.querySelector('input[name="password"]') as HTMLInputElement;
+  const totp = document.querySelector('input[name="totp"]') as HTMLInputElement;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
