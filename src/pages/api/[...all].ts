@@ -245,6 +245,8 @@ routes.set('POST:/presensi', async (req) => {
         "ph-model": ph.phModel,
         "ph-product": ph.phProduct,
         "fg": 0,
+        date: (new Date()),
+        hour: (new Date()).getHours(),
     };
 
     console.log("payload", payload)
