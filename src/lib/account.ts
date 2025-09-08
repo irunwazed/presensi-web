@@ -16,7 +16,7 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"AHMAD KHAIRUN ARSYAD",
             username: "199710262023211003",
-            password: "Qwerty12345@",
+            password: "",
             token: "df491591ummrle8v912vvmbdcbnrmmom",
             phId: "49b956bf737edce5",
             phType: "GSM",
@@ -27,7 +27,7 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"RIEVKY ARDIKA PUTRA, S.Kom",
             username: "199012072022031003",
-            password: "0248443792Myasn",
+            password: "",
             token: "df491591ummrle8v912vvmbdcbnrmmom",
             phId: "605484158e9b96c0",
             phType: "GSM",
@@ -38,7 +38,7 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"SURIPTO, S.Kom.",
             username: "199209242023211016",
-            password: "5URIPT0@bkn2024",
+            password: "",
             token: "7na6u3bvc8ei77fgdh7u2ahg0j169fjk",
             phId: "2ce92207806d77a8",
             phType: "GSM",
@@ -49,7 +49,7 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"DANANG TRISDIANA PUTRA, S.Kom.",
             username: "199804112024211004",
-            password: "Admin54321.Ayunku",
+            password: "",
             token: "7h4gsbcatf1v84ul5aalsp2qk17rpauc",
             phId: "97644af1e96963b5",
             phType: "GSM",
@@ -60,7 +60,7 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"DENI PRIYANTO, SST",
             username: "198512112024211006",
-            password: "Admin54321.Ayunku",
+            password: "",
             token: "7h4gsbcatf1v84ul5aalsp2qk17rpauc",
             phId: "a7a3061692d16478",
             phType: "GSM",
@@ -71,7 +71,7 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"MOCHAMAD SYENA BACHARUDIN, S.Kom",
             username: "199110252025061001",
-            password: "Moch@madRuhi04",
+            password: "",
             token: "7h4gsbcatf1v84ul5aalsp2qk17rpauc",
             phId: "6f7df1b1bcbc4652",
             phType: "GSM",
@@ -104,7 +104,7 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"M. RIDWAN HANAFI, S.Kom.",
             username: "199301182018011003",
-            password: "Indones!14",
+            password: "",
             token: "",
             phId: "5047db03f8e0e629",
             phType: "GSM",
@@ -115,13 +115,24 @@ export const getAccount = (username: string):Account|null => {
         {
             name:"SWANDI",
             username: "198604222010011013",
-            password: "Prakom2023#@!",
+            password: "",
             token: "",
             phId: "35217c95b2c44767",
             phType: "GSM",
             phManufacturer: "Xiaomi",
             phModel: "2407FPN8EG",
             phProduct: "rothko_global",
+        },
+        {
+            name:"DANU",
+            username: "199712172022031003",
+            password: "",
+            token: "",
+            phId: "8735aaed2b6fc877",
+            phType: "GSM",
+            phManufacturer: "samsung",
+            phModel: "SM-S711B",
+            phProduct: "r11sxxx",
         },
         // {
         //     name:"",
