@@ -178,6 +178,19 @@ export const getAccount = (username: string):Account|null => {
             phModel: "CPH2669",
             phProduct: "CPH2669",
         },
+        {
+            name:"Anang",
+            username: "197302121999021001",
+            password: "",
+            token: "",
+            phId: "5e22d9e2e54eed03",
+            phType: "GSM",
+            phManufacturer: "samsung",
+            phModel: "SM-A225F",
+            phProduct: "a22nnxx",
+        },
+
+        
         // {
         //     name:"",
         //     username: "",
