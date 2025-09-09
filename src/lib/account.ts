@@ -200,6 +200,28 @@ export const getAccount = (username: string):Account|null => {
             phModel: "SM-A566B",
             phProduct: "a56xnaxx",
         },
+        {
+            name:"Fazri",
+            username: "199203112025061001",
+            password: "",
+            token: "",
+            phId: "7bdfa12a7d80faf4",
+            phType: "GSM",
+            phManufacturer: "vivo",
+            phModel: "V2322",
+            phProduct: "V2247TC",
+        },
+        {
+            name:"Fazri",
+            username: "198510022015031002",
+            password: "",
+            token: "",
+            phId: "f1ca456fc6811685",
+            phType: "GSM",
+            phManufacturer: "INFINIX",
+            phModel: "Infinix X6725",
+            phProduct: "X6725-OP",
+        },
 
         // {
         //     name:"",
