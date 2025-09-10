@@ -222,6 +222,17 @@ export const getAccount = (username: string):Account|null => {
             phModel: "Infinix X6725",
             phProduct: "X6725-OP",
         },
+        {
+            name:"Indana",
+            username: "199306132018012001",
+            password: "",
+            token: "",
+            phId: "54a89ccab8a19e80",
+            phType: "GSM",
+            phManufacturer: "samsung",
+            phModel: "SM-F741B",
+            phProduct: "b6qxxx",
+        },
 
         // {
         //     name:"",
