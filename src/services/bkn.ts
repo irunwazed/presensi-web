@@ -160,18 +160,18 @@ export const servicePresensi = async (): Promise<{
     };
     console.log("payload", payload)
 
-    // const image = ""
-    // const data: any = await requestPost("/api/presensi", payload, "token", {
-    //     headers: {
-    //         Authorization: "Bearer " + token,
-    //     },
-    // });
-    // if (!data?.data) {
-    //     return {
-    //         status: false,
-    //         message: data?.message,
-    //     }
-    // }
+    const image = ""
+    const data: any = await requestPost("/api/presensi", payload, "token", {
+        headers: {
+            Authorization: "Bearer " + token,
+        },
+    });
+    if (!data?.data) {
+        return {
+            status: false,
+            message: data?.message,
+        }
+    }
 
     return {
         status: true,
