@@ -1,5 +1,5 @@
 import { requestGet, requestPost } from "../lib/request";
-import { getCookie, setCookie } from "../lib/storage";
+import { getCookie, getProfile, setCookie } from "../lib/storage";
 
 
 export const serviceLogin = async (username: string, password: string, totp: string): Promise<{ status: boolean, message: string }> => {
@@ -151,25 +151,27 @@ export const servicePresensi = async (): Promise<{
     message?: string,
 }> => {
     const token = getCookie("token");
+    const pegawai = getProfile()
 
     const payload = {
         timezone: "Asia/Jakarta",
         workfrom: 1,
-        username: "199710262023211003"
+        username: pegawai?.username
     };
+    console.log("payload", payload)
 
     // const image = ""
-    const data: any = await requestPost("/api/presensi", payload, "token", {
-        headers: {
-            Authorization: "Bearer " + token,
-        },
-    });
-    if (!data?.data) {
-        return {
-            status: false,
-            message: data?.message,
-        }
-    }
+    // const data: any = await requestPost("/api/presensi", payload, "token", {
+    //     headers: {
+    //         Authorization: "Bearer " + token,
+    //     },
+    // });
+    // if (!data?.data) {
+    //     return {
+    //         status: false,
+    //         message: data?.message,
+    //     }
+    // }
 
     return {
         status: true,
