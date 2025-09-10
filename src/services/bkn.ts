@@ -158,7 +158,6 @@ export const servicePresensi = async (): Promise<{
         workfrom: 1,
         username: pegawai?.username
     };
-    console.log("payload", payload)
 
     const image = ""
     const data: any = await requestPost("/api/presensi", payload, "token", {
