@@ -255,6 +255,17 @@ export const getAccount = (username: string):Account|null => {
             phModel: "M2103K19G",
             phProduct: "camellian_id",
         },
+        {
+            name:"Norman",
+            username: "199204082020121005",
+            password: "",
+            token: "",
+            phId: "7cfdce6362a4e183",
+            phType: "GSM",
+            phManufacturer: "TECNO",
+            phModel: "TECNO KJ6",
+            phProduct: "KJ6-OP",
+        },
         // {
         //     name:"",
         //     username: "",
