@@ -19,15 +19,18 @@ import { getCookie } from "../lib/storage";
     <body>
         <div class="flex justify-center min-h-screen">
             <div class="w-full sm:w-[640px] sm:border-x-2 sm:border-slate-800">
-                <div class="flex justify-center items-center flex-col">
-                    <h3 class="">update : 9 September</h3>
+                <div class="fixed bottom-0">
+
+                <div class="flex justify-center items-center flex-col text-indigo-600">
+                    <h3 class="">update : 14 September 2025</h3>
                     <h3 class="font-bold">(Nanti update, lagi sibuk)</h3>
+                </div>
                 </div>
                 <div id="screen-not-login" class="hidden">
                     <Login />
                 </div>
                 <div id="screen-login" class="hidden">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col text-indigo-900">
                         <hr />
                         <Resume />
                         <br />
@@ -48,7 +51,7 @@ import { getCookie } from "../lib/storage";
         </div>
 
         <script>
-            import { getCookie, getProfile } from "../lib/storage";
+            import { getCookie } from "../lib/storage";
 
             const screenLogin = document.getElementById(
                 "screen-login",
@@ -58,15 +61,11 @@ import { getCookie } from "../lib/storage";
             ) as HTMLDivElement;
 
             const check = getCookie("token");
-            console.log("check", check);
-
             if (!check) {
                 screenNotLogin.classList.remove("hidden");
             } else {
                 screenLogin.classList.remove("hidden");
             }
-            const profile = getProfile();
-            console.log("profile", profile);
         </script>
     </body>
 </html>

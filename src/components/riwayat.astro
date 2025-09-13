@@ -1,6 +1,13 @@
-<div>
-  <h3>Riwayat</h3>
-  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<div class="px-4 flex items-center justify-center">
+  <button id="btn-riwayat" class="py-2 px-4 bg-indigo-900 text-indigo-100 rounded-md hover:opacity-90">Lihat Riwayat</button>
+  <table
+    border="1"
+    cellpadding="8"
+    cellspacing="0"
+    style="border-collapse: collapse; width: 100%;"
+    class="hidden"
+    id="tbl-riwayat"
+  >
     <thead>
       <tr>
         <th>Device</th>
@@ -15,13 +22,20 @@
       <tr><td colspan="6">Loading...</td></tr>
     </tbody>
   </table>
+  <div class="mb-16"></div>
 </div>
 
 <script>
-  import { serviceRiwayat } from '../services/bkn.js'; // pastikan path dan ekstensi sesuai
+  import { getCookie } from "../lib/storage";
+  import { serviceRiwayat } from "../services/bkn.js"; // pastikan path dan ekstensi sesuai
+
+  const btnRiwayat = document.getElementById(
+    "btn-riwayat",
+  ) as HTMLButtonElement;
+  const tblRiwayat = document.getElementById("tbl-riwayat") as HTMLTableElement;
 
   async function loadRiwayat() {
-    const tbody = document.getElementById('riwayat-list') as HTMLBodyElement;
+    const tbody = document.getElementById("riwayat-list") as HTMLBodyElement;
     tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
 
     try {
@@ -31,28 +45,28 @@
       if (data.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6">Tidak ada data</td></tr>';
       } else {
-        tbody.innerHTML = ''; // clear loading
-        data.forEach(item => {
-          const tr = document.createElement('tr');
+        tbody.innerHTML = ""; // clear loading
+        data.forEach((item) => {
+          const tr = document.createElement("tr");
 
           // Buat masing-masing <td> sesuai kolom
-          const tdDevice1 = document.createElement('td');
-          tdDevice1.textContent = item.device || '-';
+          const tdDevice1 = document.createElement("td");
+          tdDevice1.textContent = item.device || "-";
 
-          const tdTanggal = document.createElement('td');
-          tdTanggal.textContent = item.itgl || '-';
+          const tdTanggal = document.createElement("td");
+          tdTanggal.textContent = item.itgl || "-";
 
-          const tdJam = document.createElement('td');
-          tdJam.textContent = item.jam || '-';
+          const tdJam = document.createElement("td");
+          tdJam.textContent = item.jam || "-";
 
-          const tdDevice2 = document.createElement('td');
-          tdDevice2.textContent = item.device || '-'; // kalau ada device kedua
+          const tdDevice2 = document.createElement("td");
+          tdDevice2.textContent = item.device || "-"; // kalau ada device kedua
 
-          const tdWF = document.createElement('td');
-          tdWF.textContent = item.WF || '-';
+          const tdWF = document.createElement("td");
+          tdWF.textContent = item.WF || "-";
 
-          const tdCheck = document.createElement('td');
-          tdCheck.textContent = item.check || '-';
+          const tdCheck = document.createElement("td");
+          tdCheck.textContent = item.check || "-";
 
           // Append semua <td> ke <tr>
           tr.appendChild(tdDevice1);
@@ -71,5 +85,8 @@
     }
   }
 
-  loadRiwayat();
+  btnRiwayat.addEventListener("click", () => {
+    tblRiwayat.classList.remove("hidden");
+    loadRiwayat();
+  });
 </script>

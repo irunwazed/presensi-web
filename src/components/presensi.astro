@@ -1,15 +1,30 @@
-<div>
-    <ul>
-        <li></li>
-    </ul>
-    <button id="btn-presensi" class="py-2 px-4 bg-green-700 text-green-50 rounded-md hover:opacity-85">Presensi</button>
+<div id="comp-presensi" class="hidden px-4 py-16">
+    <div class="flex justify-center items-center">
+        <button
+            id="btn-presensi"
+            class="py-2 px-4 bg-green-700 text-green-50 rounded-md hover:opacity-85"
+            >Presensi</button
+        >
+    </div>
 </div>
 
 <script>
+    import { getCookie } from "../lib/storage";
     import { servicePresensi } from "../services/bkn";
     import Swal from "sweetalert2";
 
-    const btnPresensi = document.getElementById("btn-presensi") as HTMLButtonElement;
+    const btnPresensi = document.getElementById(
+        "btn-presensi",
+    ) as HTMLButtonElement;
+
+    const comp = document.getElementById("comp-presensi") as HTMLDivElement;
+
+    const main = async () => {
+        const check = getCookie("isVerif");
+        if (check) {
+            comp.classList.remove("hidden");
+        }
+    };
 
     btnPresensi.addEventListener("click", async () => {
         // Tampilkan loading
@@ -43,7 +58,6 @@
             });
 
             // Kalau perlu, update UI (misalnya isi <ul>)
-
         } catch (error) {
             Swal.close();
             Swal.fire({
@@ -54,4 +68,6 @@
             console.error("Presensi error:", error);
         }
     });
+
+    main();
 </script>

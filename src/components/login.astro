@@ -1,32 +1,63 @@
-<!-- Pastikan Tailwind sudah di-include di project kamu, contoh via CDN: -->
-<!-- <script src="https://cdn.tailwindcss.com"></script> -->
-
-<div class="max-w-md mx-auto mt-20 p-8 border border-gray-300 rounded-lg shadow-lg font-sans bg-white">
-  <form action="" method="post" id="form-login" class="flex flex-col space-y-6">
-    <div>
-      <label for="username" class="block mb-2 text-gray-700 font-semibold">Username</label>
-      <input type="text" name="username" id="username" required
-        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+<div class="flex items-center justify-center min-h-screen px-2 not-odd: bg-gradient-to-tr from-blue-500 to-purple-600">
+  <div class="w-full max-w-lg bg-white rounded-2xl shadow-lg p-8">
+    <!-- Logo -->
+    <div class="flex flex-col items-center mb-6">
+      <div class="bg-gradient-to-tr from-blue-500 to-purple-600 w-16 h-16 flex items-center justify-center rounded-full text-white text-2xl font-bold">
+        DP
+      </div>
+      <h1 class="text-lg font-bold mt-2">Dunia Pohon</h1>
     </div>
 
-    <div>
-      <label for="password" class="block mb-2 text-gray-700 font-semibold">Password</label>
-      <input type="password" name="password" id="password" required
-        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
-    </div>
+    <!-- Welcome -->
+    <h2 class="text-center text-xl font-semibold mb-6">Welcome back !</h2>
 
-    <div>
-      <label for="totp" class="block mb-2 text-gray-700 font-semibold">TOTP</label>
-      <input type="text" name="totp" id="totp" required
-        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
-    </div>
+    <!-- Form -->
+    <form action="#" id="form-login">
+      <!-- Username -->
+      <input type="text" name="username" placeholder="Username" class="w-full px-4 py-3 mb-4 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
 
-    <button type="submit"
-      class="bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition-colors duration-300">
-      Masuk
-    </button>
-  </form>
+      <!-- Password -->
+      <div class="relative mb-4">
+        <input type="password" name="password" placeholder="Password" class="w-full px-4 py-3 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      </div>
+
+      <!-- Password -->
+      <div class="relative mb-4">
+        <input type="password" name="totp" placeholder="TOPT" class="w-full px-4 py-3 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      </div>
+
+
+      <!-- Login button -->
+      <button type="submit" class="w-full py-3 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 text-white font-semibold hover:opacity-90">
+        Login
+      </button>
+    </form>
+
+    <!-- Sign up -->
+    <p class="text-center text-sm mt-6 my-6">
+      New user?
+      <button class="text-blue-500 font-semibold" id="sign-up">Sign Up</button>
+    </p>
+
+    <!-- OR -->
+    <!-- <div class="flex items-center my-6">
+      <hr class="flex-grow border-gray-300">
+      <span class="px-2 text-gray-500 text-sm">OR</span>
+      <hr class="flex-grow border-gray-300">
+    </div> -->
+
+    <!-- Social login -->
+    <!-- <div class="flex justify-center space-x-4">
+      <a href="#" class="text-blue-400 hover:scale-110">🐦</a>
+      <a href="#" class="text-blue-700 hover:scale-110">in</a>
+      <a href="#" class="text-blue-600 hover:scale-110">f</a>
+      <a href="#" class="text-red-500 hover:scale-110">G</a>
+    </div>
+    <p class="text-center text-sm text-gray-500 mt-2">Sign in with another account</p> -->
+  </div>
 </div>
+
+
 
 <script>
   import { saveProfile } from "../lib/storage";
@@ -37,6 +68,17 @@
   const username = document.querySelector('input[name="username"]') as HTMLInputElement;
   const password = document.querySelector('input[name="password"]') as HTMLInputElement;
   const totp = document.querySelector('input[name="totp"]') as HTMLInputElement;
+
+  const signUp = document.getElementById("sign-up") as HTMLButtonElement;
+
+  signUp.addEventListener("click", () => {
+      Swal.fire({
+        title: "Gagal",
+        text: "hehe",
+        icon: "error",
+      });
+  })
+  
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -71,7 +113,7 @@
 
         setTimeout(() => {
           window.location.reload();
-        }, 2000);
+        }, 1500);
 
       } else {
         Swal.fire({
@@ -89,4 +131,4 @@
       console.error(error);
     }
   });
-</script>
+</script> 

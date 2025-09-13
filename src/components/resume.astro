@@ -1,5 +1,5 @@
 <div class="px-4">
-    <div class="w-full flex gap-8 mt-10 mb-10">
+    <div class="w-full flex gap-8 mt-10 mb-10 bg-white/90 rounded-md p-2 text-indigo-900">
         <div class="size-40 rounded-full bg-indigo-600"></div>
         <ul class="mt-20">
             <li id="profile-nama" class="font-bold text-xl"></li>
@@ -11,9 +11,9 @@
     <h3 class="font-semibold text-xl ml-2">2 September 2025</h3>
 
     <div
-        class="bg-green-600 text-white rounded-lg shadow p-5 flex items-center space-x-4 hover:bg-green-700 transition"
+        class="bg-indigo-500 text-white rounded-lg shadow p-5 flex items-center space-x-4 hover:bg-indigo-600 transition"
     >
-        <div class="p-3 bg-green-800 rounded-full">
+        <div class="p-3 bg-indigo-900 rounded-full">
             <!-- Icon: dollar sign -->
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@
 </div>
 
 <script>
-    import { getProfile } from "../lib/storage";
+    import { getCookie, getProfile } from "../lib/storage";
     import { serviceResume } from "../services/bkn";
 
     const btnResume = document.getElementById(
@@ -95,7 +95,11 @@
     btnResume.addEventListener("click", async () => {
         getResume()
     });
-    getResume()
+
+    const check = getCookie("token");
+    if(check){
+        getResume()
+    }
 
     const profile = getProfile();
     profileJabatan.innerHTML = profile?.jabatan ?? "";

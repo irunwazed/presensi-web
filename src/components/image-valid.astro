@@ -1,21 +1,73 @@
-<input type="file" id="fileInput" accept="image/*" />
-<br />
-<textarea id="base64Output" class="hidden" rows="10" cols="60" readonly></textarea>
-<br />
-<img id="preview" alt="Preview Image" />
+<div class="hidden px-4" id="comp-resume">
+    <input type="file" id="fileInput" accept="image/*" />
+    <br />
+    <textarea id="base64Output" class="hidden" rows="10" cols="60" readonly
+    ></textarea>
+    <br />
+    <img id="preview" class="hidden" alt="Preview Image" />
 
-<button id="btn-face" class="py-2 px-4 bg-orange-700 text-orange-50 rounded-md hover:opacity-85">kirim</button>
-
+    <button
+        id="btn-face"
+        class="py-2 px-4 bg-orange-700 text-orange-50 rounded-md hover:opacity-85 hidden"
+        >kirim</button
+    >
+</div>
 <script>
+    import { getCookie, setCookie } from "../lib/storage";
     import { serviceFaceverification } from "../services/bkn";
     import Swal from "sweetalert2";
 
     const fileInput = document.getElementById("fileInput") as HTMLInputElement;
     const preview = document.getElementById("preview") as HTMLImageElement;
+    const comp = document.getElementById("comp-resume") as HTMLDivElement;
+
     const base64Output = document.getElementById(
         "base64Output",
     ) as HTMLTextAreaElement;
     const btnFace = document.getElementById("btn-face") as HTMLButtonElement;
+
+    const main = async () => {
+        const check = getCookie("isVerif");
+        if (!check) {
+            comp.classList.remove("hidden");
+        }
+    };
+
+    // fileInput.addEventListener("change", (event: any) => {
+    //     const file = event?.target?.files[0];
+    //     if (!file) return;
+
+    //     const reader = new FileReader();
+
+    //     reader.onload = function (e) {
+    //         const img = new Image();
+    //         img.onload = function () {
+    //             const canvas = document.createElement("canvas");
+    //             canvas.width = 450;
+    //             canvas.height = 600;
+
+    //             const ctx = canvas.getContext("2d");
+    //             ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    //             const dataURL = canvas.toDataURL("image/jpeg", 0.8);
+
+    //             preview.src = dataURL;
+    //             preview.width = 450;
+    //             preview.height = 600;
+
+    //             // ambil base64 pure (buang prefix data:image/jpeg;base64,)
+    //             const base64 = dataURL.split(",")[1];
+
+    //             base64Output.value = "data:image/jpeg;base64," + base64;
+    //         };
+    //         img.src = e?.target?.result?.toString() ?? "";
+    //     };
+
+    //     reader.readAsDataURL(file);
+
+    //     btnFace.classList.remove("hidden")
+    //     preview.classList.remove("hidden")
+    // });
 
     fileInput.addEventListener("change", (event: any) => {
         const file = event?.target?.files[0];
@@ -27,27 +79,64 @@
             const img = new Image();
             img.onload = function () {
                 const canvas = document.createElement("canvas");
-                canvas.width = 450;
-                canvas.height = 600;
+                const targetWidth = 450;
+                const targetHeight = 600;
+
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
 
                 const ctx = canvas.getContext("2d");
-                ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Hitung rasio crop
+                const aspectTarget = targetWidth / targetHeight;
+                const aspectImage = img.width / img.height;
+
+                let cropWidth, cropHeight, cropX, cropY;
+
+                if (aspectImage > aspectTarget) {
+                    // Gambar lebih lebar → crop sisi kiri dan kanan
+                    cropHeight = img.height;
+                    cropWidth = cropHeight * aspectTarget;
+                    cropX = (img.width - cropWidth) / 2;
+                    cropY = 0;
+                } else {
+                    // Gambar lebih tinggi → crop atas dan bawah
+                    cropWidth = img.width;
+                    cropHeight = cropWidth / aspectTarget;
+                    cropX = 0;
+                    cropY = (img.height - cropHeight) / 2;
+                }
+
+                // Gambar hasil crop ke canvas
+                ctx?.drawImage(
+                    img,
+                    cropX,
+                    cropY,
+                    cropWidth,
+                    cropHeight, // area dari gambar asli
+                    0,
+                    0,
+                    targetWidth,
+                    targetHeight, // area ke canvas
+                );
 
                 const dataURL = canvas.toDataURL("image/jpeg", 0.8);
 
                 preview.src = dataURL;
-                preview.width = 450;
-                preview.height = 600;
+                preview.width = targetWidth;
+                preview.height = targetHeight;
 
-                // ambil base64 pure (buang prefix data:image/jpeg;base64,)
+                // ambil base64 pure
                 const base64 = dataURL.split(",")[1];
-
                 base64Output.value = "data:image/jpeg;base64," + base64;
             };
             img.src = e?.target?.result?.toString() ?? "";
         };
 
         reader.readAsDataURL(file);
+
+        btnFace.classList.remove("hidden");
+        preview.classList.remove("hidden");
     });
 
     btnFace.addEventListener("click", async () => {
@@ -72,6 +161,7 @@
             Swal.close();
 
             if (!face.status) {
+                setCookie("isVerif", "true", 5 * 60);
                 Swal.fire({
                     title: "Gagal",
                     text: face.message || "Verifikasi wajah gagal",
@@ -94,4 +184,8 @@
             console.error(error);
         }
     });
+
+    // setCookie("isVerif", "true", 5 * 60);
+
+    main();
 </script>

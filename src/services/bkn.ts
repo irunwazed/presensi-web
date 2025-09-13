@@ -17,7 +17,7 @@ export const serviceLogin = async (username: string, password: string, totp: str
         }
     }
 
-    setCookie("token", data?.token, 365)
+    setCookie("token", data?.token, 365 * 24 * 60 * 60)
     return {
         status: true,
         message: "Berhasil login"
