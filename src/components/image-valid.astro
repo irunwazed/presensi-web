@@ -14,7 +14,7 @@
 </div>
 <script>
     import { getCookie, setCookie } from "../lib/storage";
-    import { serviceFaceverification } from "../services/bkn";
+    import { serviceFaceverification, servicePresensi } from "../services/bkn";
     import Swal from "sweetalert2";
 
     const fileInput = document.getElementById("fileInput") as HTMLInputElement;
@@ -158,18 +158,19 @@
             const face = await serviceFaceverification(base64Output.value);
 
             // Tutup loading
-            Swal.close();
+            // Swal.close();
 
             if (!face.status) {
-                setCookie("isVerif", "true", 5 * 60);
-                Swal.fire({
-                    title: "Gagal",
-                    text: face.message || "Verifikasi wajah gagal",
-                    icon: "error",
-                });
-                setTimeout(() => {
-                    window.location.reload()
-                }, 1000)
+                await presensi();
+                // setCookie("isVerif", "true", 5 * 60);
+                // Swal.fire({
+                //     title: "Gagal",
+                //     text: face.message || "Verifikasi wajah gagal",
+                //     icon: "error",
+                // });
+                // setTimeout(() => {
+                //     window.location.reload()
+                // }, 1000)
             } else {
                 Swal.fire({
                     title: "Sukses",
@@ -178,15 +179,48 @@
                 });
             }
         } catch (error) {
-            Swal.close();
             Swal.fire({
                 title: "Terjadi Kesalahan",
                 text: "Gagal memproses verifikasi wajah",
                 icon: "error",
             });
             console.error(error);
+        } finally {
+            Swal.close();
         }
+        
     });
+
+    const presensi = async () => {
+        try {
+            const data = await servicePresensi();
+            // Cek apakah response berhasil
+            if (!data?.status) {
+                Swal.fire({
+                    title: "Presensi Gagal",
+                    text: data?.message || "Terjadi kesalahan saat presensi",
+                    icon: "error",
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: "Presensi Berhasil",
+                text: data?.message || "Anda berhasil melakukan presensi",
+                icon: "success",
+            });
+
+            // Kalau perlu, update UI (misalnya isi <ul>)
+        } catch (error) {
+            // Swal.close();
+            Swal.fire({
+                title: "Terjadi Kesalahan",
+                text: "Tidak dapat menghubungi server presensi",
+                icon: "error",
+            });
+            console.error("Presensi error:", error);
+        }
+    };
 
     // setCookie("isVerif", "true", 5 * 60);
 
