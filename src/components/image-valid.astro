@@ -210,6 +210,10 @@
                 icon: "success",
             });
 
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000)
+
             // Kalau perlu, update UI (misalnya isi <ul>)
         } catch (error) {
             // Swal.close();
