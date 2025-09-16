@@ -1,5 +1,10 @@
-<div id="comp-presensi" class="px-4 py-16">
+<div id="comp-presensi" class="hidden px-4 py-16">
     <div class="flex justify-center items-center">
+
+        <select name="workfrom" id="">
+            <option value="WFO">WFO</option>
+            <option value="WFA">WFA</option>
+        </select>
         <button
             id="btn-presensi"
             class="py-2 px-4 bg-green-700 text-green-50 rounded-md hover:opacity-85"
@@ -9,13 +14,15 @@
 </div>
 
 <script>
-    import { getCookie } from "../lib/storage";
+    import { getCookie, removeCookie } from "../lib/storage";
     import { servicePresensi } from "../services/bkn";
     import Swal from "sweetalert2";
 
     const btnPresensi = document.getElementById(
         "btn-presensi",
     ) as HTMLButtonElement;
+
+  const formWorkFrom = document.querySelector('select[name="workfrom"]') as HTMLSelectElement;
 
     const comp = document.getElementById("comp-presensi") as HTMLDivElement;
 
@@ -38,7 +45,10 @@
         });
 
         try {
-            const data = await servicePresensi();
+
+            const workfrom = formWorkFrom.value == "WFA" ? "WFA" : "WFO";
+            
+            const data = await servicePresensi(workfrom);
             Swal.close(); // Tutup loading
 
             // Cek apakah response berhasil
@@ -56,6 +66,12 @@
                 text: data?.message || "Anda berhasil melakukan presensi",
                 icon: "success",
             });
+
+            removeCookie("isVerif")
+
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000)
 
             // Kalau perlu, update UI (misalnya isi <ul>)
         } catch (error) {

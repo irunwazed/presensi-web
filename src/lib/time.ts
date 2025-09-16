@@ -6,3 +6,7 @@ export function getTimeRangeResult(date: Date = new Date()): number {
     else if (hour >= 11 && hour < 13) return 1;
     else return 2;
 }
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

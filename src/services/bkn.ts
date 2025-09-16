@@ -1,5 +1,6 @@
 import { requestGet, requestPost } from "../lib/request";
 import { getCookie, getProfile, setCookie } from "../lib/storage";
+import { sleep } from "../lib/time";
 
 
 export const serviceLogin = async (username: string, password: string, totp: string): Promise<{ status: boolean, message: string }> => {
@@ -127,6 +128,14 @@ export const serviceFaceverification = async (image: string): Promise<{
     message?: string,
 }> => {
     const token = getCookie("token");
+
+
+    // await sleep(2000)
+
+    // return {
+    //     status: true,
+    // }
+
     // const image = ""
     const data: any = await requestPost("/api/faceverification", { image: image }, "token", {
         headers: {
@@ -146,7 +155,7 @@ export const serviceFaceverification = async (image: string): Promise<{
 }
 
 
-export const servicePresensi = async (): Promise<{
+export const servicePresensi = async (workfrom:"WFO"|"WFA"): Promise<{
     status: boolean,
     message?: string,
 }> => {
@@ -155,9 +164,16 @@ export const servicePresensi = async (): Promise<{
 
     const payload = {
         timezone: "Asia/Jakarta",
-        workfrom: 1,
+        workfrom: workfrom == "WFO" ? 1 : 0,
         username: pegawai?.username
     };
+
+
+    // await sleep(2000)
+
+    // return {
+    //     status: true,
+    // }
 
     const image = ""
     const data: any = await requestPost("/api/presensi", payload, "token", {

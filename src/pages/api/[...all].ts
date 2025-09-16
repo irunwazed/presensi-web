@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { HTTPResponse, requestGet, requestPost } from '../../lib/request';
-import { getTimeRangeResult } from '../../lib/time';
+import { getTimeRangeResult, sleep } from '../../lib/time';
 import { getAccount } from '../../lib/account';
 import { getAddress, getPosisi } from '../../lib/map';
 
@@ -132,7 +132,14 @@ routes.set('POST:/faceverification', async (req) => {
 
     const { image } = await req.json();
 
+
+    // await sleep(2000)
+
+
     const data:any = await requestPost(API_URL + "/faceverification", {"img": image}, "lbp_presence="+bearerToken)
+    
+    console.log("data", data)
+
     if(data?.status != '1'){
         return HTTPResponse({
             status: 400, message: data?.message || "Bad Request"
@@ -143,8 +150,14 @@ routes.set('POST:/faceverification', async (req) => {
 
 
     return HTTPResponse({
-        status: 200, message: "Berhasil get data", data: data
+        status: 200, message: "Berhasil verifikasi", data: {
+            status: true
+        }
     })
+
+    // return HTTPResponse({
+    //     status: 200, message: "Berhasil get data"
+    // })
 });
 
 
@@ -247,6 +260,11 @@ routes.set('POST:/presensi', async (req) => {
         "fg": 0,
     };
 
+
+    // await sleep(2000)
+
+
+
     console.log("payload", payload)
 
     const data:any = await requestPost(API_URL + "/absensi", payload, "lbp_presence="+bearerToken)
@@ -255,9 +273,12 @@ routes.set('POST:/presensi', async (req) => {
             status: 400, message: data?.message || "Bad Request"
         })
     }
+    console.log("data", data)
 
     return HTTPResponse({
-        status: 200, message: "Berhasil get data", data: payload
+        status: 200, message: "Berhasil presensi", data: {
+            status:true
+        }
     })
 });
 

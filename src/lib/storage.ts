@@ -32,6 +32,13 @@ export const getCookie = (name: string): string | null => {
     return null;
 }
 
+export const removeCookie = (name: string): void => {
+  document.cookie =
+    name +
+    "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+};
+
+
 function saveToStorage(key: string, value: any): void {
   try {
     const serializedValue = JSON.stringify(value);
