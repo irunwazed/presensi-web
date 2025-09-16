@@ -19,12 +19,15 @@ import { getCookie } from "../lib/storage";
     <body>
         <div class="flex justify-center min-h-screen">
             <div class="w-full sm:w-[640px] sm:border-x-2 sm:border-slate-800">
-                <div class="fixed bottom-0">
-
-                <div class="flex justify-center items-center flex-col text-indigo-600">
-                    <h3 class="">update : 14 September 2025</h3>
-                    <h3 class="font-bold">(Nanti update, lagi cuti)</h3>
-                </div>
+                <div class="relative">
+                    <div class="absolute top-0 left-[200px]">
+                        <div
+                            class="flex justify-center items-center flex-col text-indigo-400"
+                        >
+                            <h3 class="">update : 17 September 2025</h3>
+                            <h3 class="font-bold">(Nanti update, lagi cuti)</h3>
+                        </div>
+                    </div>
                 </div>
                 <div id="screen-not-login" class="hidden">
                     <Login />
@@ -37,9 +40,6 @@ import { getCookie } from "../lib/storage";
                         <br />
                         <hr />
                         <ImageValid />
-                        <br />
-                        <br />
-                        <hr />
                         <Presensi />
                         <br />
                         <br />

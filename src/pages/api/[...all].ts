@@ -134,6 +134,11 @@ routes.set('POST:/faceverification', async (req) => {
 
 
     // await sleep(2000)
+    // return HTTPResponse({
+    //     status: 200, message: "Berhasil verifikasi", data: {
+    //         status: true
+    //     }
+    // })
 
 
     const data:any = await requestPost(API_URL + "/faceverification", {"img": image}, "lbp_presence="+bearerToken)
@@ -146,18 +151,12 @@ routes.set('POST:/faceverification', async (req) => {
         })
     }
 
-    console.log("data", data)
-
 
     return HTTPResponse({
         status: 200, message: "Berhasil verifikasi", data: {
             status: true
         }
     })
-
-    // return HTTPResponse({
-    //     status: 200, message: "Berhasil get data"
-    // })
 });
 
 
@@ -262,6 +261,9 @@ routes.set('POST:/presensi', async (req) => {
 
 
     // await sleep(2000)
+    // return HTTPResponse({
+    //     status: 200, message: "Berhasil presensi", data: payload
+    // })
 
 
 
