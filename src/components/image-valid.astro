@@ -160,7 +160,7 @@
             // Tutup loading
             // Swal.close();
 
-            if (!face.status) {
+            if (face.status) {
                 await presensi();
                 // setCookie("isVerif", "true", 5 * 60);
                 // Swal.fire({
@@ -173,9 +173,9 @@
                 // }, 1000)
             } else {
                 Swal.fire({
-                    title: "Sukses",
-                    text: "Berhasil verifikasi wajah",
-                    icon: "success",
+                    title: "gagal",
+                    text: "gagal", 
+                    icon: "error",
                 });
             }
         } catch (error) {
