@@ -266,6 +266,17 @@ export const getAccount = (username: string):Account|null => {
             phModel: "TECNO KJ6",
             phProduct: "KJ6-OP",
         },
+        {
+            name:"Astrid",
+            username: "198510032008122001",
+            password: "",
+            token: "",
+            phId: "e123abe1810d0236",
+            phType: "GSM",
+            phManufacturer: "realme",
+            phModel: "RMX2170",
+            phProduct: "RMX2170T2",
+        },
         // {
         //     name:"",
         //     username: "",
