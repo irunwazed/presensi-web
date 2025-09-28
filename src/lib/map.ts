@@ -14,7 +14,7 @@ function distanceBetween(lat1: number, lng1: number, lat2: number, lng2: number)
     return R * c;
 }
 
-export function getPosisi(): { jarak: number; pos: LatLng } {
+export function getPosisi(max:number = 50): { jarak: number; pos: LatLng } {
     const pos2: LatLng = { lat: -6.258774, lng: 106.868135 };
 
     let lat: number;
@@ -33,7 +33,7 @@ export function getPosisi(): { jarak: number; pos: LatLng } {
         lng = pos2.lng + randLng;
 
         jarak = distanceBetween(lat, lng, pos2.lat, pos2.lng);
-    } while (jarak >= 50);
+    } while (jarak >= max);
 
     return {
         jarak: Math.floor(jarak),

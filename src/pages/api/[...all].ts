@@ -9,7 +9,7 @@ type Handler = (req: Request, params: Record<string, string>) => Promise<Respons
 // Router map: key = "METHOD:/path", value = handler function
 const routes = new Map<string, Handler>();
 
-const API_URL:string = import.meta.env.API_URL ?? ""
+const API_URL: string = import.meta.env.API_URL ?? ""
 
 
 // Register route POST /api/echo
@@ -25,7 +25,7 @@ routes.set('POST:/login', async (req) => {
     const { username, password, totp } = await req.json();
 
     const ph = getAccount(username)
-    if(!ph){
+    if (!ph) {
         return HTTPResponse({
             status: 401, message: "tidak terdaftar"
         })
@@ -45,7 +45,7 @@ routes.set('POST:/login', async (req) => {
     const pre: any = await requestPost(API_URL + "/login", payload)
     if (!pre?.session_id) {
         return HTTPResponse({
-            status: 400, message:  pre?.message || 'username, password, otp tidak cocok'
+            status: 400, message: pre?.message || 'username, password, otp tidak cocok'
         })
     }
 
@@ -141,11 +141,11 @@ routes.set('POST:/faceverification', async (req) => {
     // })
 
 
-    const data:any = await requestPost(API_URL + "/faceverification", {"img": image}, "lbp_presence="+bearerToken)
-    
+    const data: any = await requestPost(API_URL + "/faceverification", { "img": image }, "lbp_presence=" + bearerToken)
+
     console.log("data", data)
 
-    if(data?.status != '1'){
+    if (data?.status != '1') {
         return HTTPResponse({
             status: 400, message: data?.message || "Bad Request"
         })
@@ -175,10 +175,10 @@ routes.set('POST:/profile', async (req) => {
         })
     }
 
-    const {username}  =  await req.json();
+    const { username } = await req.json();
     console.log("username", username)
     const ph = getAccount(username)
-    if(!ph){
+    if (!ph) {
         return HTTPResponse({
             status: 400, message: "tidak terdaftar"
         })
@@ -193,8 +193,8 @@ routes.set('POST:/profile', async (req) => {
         "ph-product": ph.phProduct,
     };
 
-    const data:any = await requestPost(API_URL + "/updatedata", payload, "lbp_presence="+bearerToken)
-    if(data?.status != '1'){
+    const data: any = await requestPost(API_URL + "/updatedata", payload, "lbp_presence=" + bearerToken)
+    if (data?.status != '1') {
         return HTTPResponse({
             status: 400, message: data?.message || "Bad Request"
         })
@@ -224,30 +224,40 @@ routes.set('POST:/presensi', async (req) => {
 
     const { workfrom, timezone, username } = await req.json();
 
-    if(parseInt(workfrom) != 0 && parseInt(workfrom) != 1){
+    if (parseInt(workfrom) != 0 && parseInt(workfrom) != 1) {
         return HTTPResponse({
             status: 400, message: "Pilih kerja dari mana"
         })
     }
 
+
+
     const ph = getAccount(username)
-    if(!ph){
+    if (!ph) {
         return HTTPResponse({
             status: 400, message: "tidak terdaftar"
         })
     }
 
-    const lokasi = getPosisi()
-    const add = await getAddress(lokasi.pos.lat, lokasi.pos.lng)
+
+
+    if (ph.home.length == 0 && workfrom == 0) {
+        return HTTPResponse({
+            status: 400, message: "belum punya lokasi rumah"
+        })
+    }
+
+    const lokasi = getPosisi(workfrom == 1 ? 50 : 5)
+    const add = workfrom == 1 ? await getAddress(lokasi.pos.lat, lokasi.pos.lng) : await getAddress(ph.home[0].latitude, ph.home[0].longitude)
 
 
     const payload = {
         "timezone": timezone || "Asia/Jakarta",
-        "latt": lokasi.pos.lat,
-        "lng": lokasi.pos.lng,
+        "latt": workfrom == 1 ? lokasi.pos.lat : ph.home[0].latitude,
+        "lng": workfrom == 1 ? lokasi.pos.lng : ph.home[0].longitude,
         "workfrom": workfrom, // 0 || 1
         "checkintype": getTimeRangeResult(), // 1, // 0 - 2
-        "address":  add,
+        "address": add,
         "kesehatan": "sehat",
         "devicetype": "0",
         "accu": lokasi.jarak,
@@ -269,8 +279,9 @@ routes.set('POST:/presensi', async (req) => {
 
     console.log("payload", payload)
 
-    const data:any = await requestPost(API_URL + "/absensi", payload, "lbp_presence="+bearerToken)
-    if(data?.status != '1'){
+
+    const data: any = await requestPost(API_URL + "/absensi", payload, "lbp_presence=" + bearerToken)
+    if (data?.status != '1') {
         return HTTPResponse({
             status: 400, message: data?.message || "Bad Request"
         })
@@ -279,7 +290,7 @@ routes.set('POST:/presensi', async (req) => {
 
     return HTTPResponse({
         status: 200, message: "Berhasil presensi", data: {
-            status:true
+            status: true
         }
     })
 });

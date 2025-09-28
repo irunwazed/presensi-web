@@ -1,4 +1,10 @@
 
+type Posisi = {
+    nama: string
+    latitude: number,
+    longitude: number
+}
+
 type Account = {
     name: string,
     username: string,
@@ -8,8 +14,11 @@ type Account = {
     phType: string,
     phManufacturer: string,
     phModel: string,
-    phProduct: string
+    phProduct: string,
+    home: Posisi[]
 }
+
+
 
 export const getAccount = (username: string):Account|null => {
     const accounts:Account[] = [
@@ -23,6 +32,13 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "24069PC21G",
             phProduct: "peridot_global",
+            home: [
+                {
+                    nama: "Rumah",
+                    latitude: -6.27843399, 
+                    longitude: 106.4844309
+                }
+            ],
         },
         {
             name:"RIEVKY ARDIKA PUTRA, S.Kom",
@@ -34,6 +50,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "22021211RG",
             phProduct: "munch_id",
+            home: [],
         },
         {
             name:"SURIPTO, S.Kom.",
@@ -45,6 +62,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-M325FV",
             phProduct: "m32xx",
+            home: [],
         },
         {
             name:"DANANG TRISDIANA PUTRA, S.Kom.",
@@ -56,6 +74,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "22071212AG",
             phProduct: "plato_id",
+            home: [],
         },
         {
             name:"DENI PRIYANTO, SST",
@@ -67,6 +86,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-A515F",
             phProduct: "a51nsxx",
+            home: [],
         },
         {
             name:"MOCHAMAD SYENA BACHARUDIN, S.Kom",
@@ -78,6 +98,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-G998B",
             phProduct: "p3sxxx",
+            home: [],
         },
         {
             name:"ANITA SRI HANDAYANI, S.Kom",
@@ -89,6 +110,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "M2004J19C",
             phProduct: "lancelot_id",
+            home: [],
         },
         {
             name:"ATIM MUFARRIHAH, S.Kom.",
@@ -100,6 +122,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "INFINIX",
             phModel: "Infinix X6882",
             phProduct: "X6882-OP",
+            home: [],
         },
         {
             name:"M. RIDWAN HANAFI, S.Kom.",
@@ -111,6 +134,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-A566B",
             phProduct: "a56xnaxx",
+            home: [],
         },
         {
             name:"SWANDI",
@@ -122,6 +146,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "2407FPN8EG",
             phProduct: "rothko_global",
+            home: [],
         },
         {
             name:"DANU",
@@ -133,6 +158,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-S711B",
             phProduct: "r11sxxx",
+            home: [],
         },
         {
             name:"Novel",
@@ -144,6 +170,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "2310FPCA4G",
             phProduct: "gust_p_id",
+            home: [],
         },
         {
             name:"Fatin",
@@ -155,6 +182,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-A515F",
             phProduct: "a51nsxx",
+            home: [],
         },
         {
             name:"Yaya",
@@ -166,6 +194,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-S921B",
             phProduct: "e1sxxx",
+            home: [],
         },
         {
             name:"Gunawan",
@@ -177,6 +206,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "OPPO",
             phModel: "CPH2669",
             phProduct: "CPH2669",
+            home: [],
         },
         {
             name:"Anang",
@@ -188,6 +218,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-A225F",
             phProduct: "a22nnxx",
+            home: [],
         },
         {
             name:"Aya",
@@ -199,6 +230,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-A566B",
             phProduct: "a56xnaxx",
+            home: [],
         },
         {
             name:"Fazri",
@@ -210,9 +242,10 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "vivo",
             phModel: "V2322",
             phProduct: "V2247TC",
+            home: [],
         },
         {
-            name:"Fazri",
+            name:"ANGGI IRAWAN",
             username: "198510022015031002",
             password: "",
             token: "",
@@ -221,6 +254,11 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "INFINIX",
             phModel: "Infinix X6725",
             phProduct: "X6725-OP",
+            home: [{
+                nama: "Rumah",
+                latitude: -6.2474561,
+                longitude: 106.7157921
+            }],
         },
         {
             name:"Indana",
@@ -232,6 +270,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-F741B",
             phProduct: "b6qxxx",
+            home: [],
         },
         {
             name:"Alim",
@@ -243,6 +282,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "realme",
             phModel: "RMX3710",
             phProduct: "RMX3710",
+            home: [],
         },
         {
             name:"Yadi",
@@ -254,6 +294,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "M2103K19G",
             phProduct: "camellian_id",
+            home: [],
         },
         {
             name:"Norman",
@@ -265,6 +306,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "TECNO",
             phModel: "TECNO KJ6",
             phProduct: "KJ6-OP",
+            home: [],
         },
         {
             name:"Astrid",
@@ -276,6 +318,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "realme",
             phModel: "RMX2170",
             phProduct: "RMX2170T2",
+            home: [],
         },
         {
             name:"Ramdam",
@@ -287,6 +330,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-A546E",
             phProduct: "a54xnsxx",
+            home: [],
         },
         {
             name:"MITA",
@@ -298,6 +342,7 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "2201116TG",
             phProduct: "viva_id",
+            home: [],
         },
         // {
         //     name:"",
@@ -309,6 +354,7 @@ export const getAccount = (username: string):Account|null => {
         //     phManufacturer: "",
         //     phModel: "",
         //     phProduct: "",
+        //     home: [],
         // },
     ]
 
