@@ -158,7 +158,14 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "samsung",
             phModel: "SM-S711B",
             phProduct: "r11sxxx",
-            home: [],
+            home: [
+
+                {
+                    nama: "Rumah",
+                    latitude: -6.4256227, 
+                    longitude: 106.8655784
+                }
+            ],
         },
         {
             name:"Novel",
