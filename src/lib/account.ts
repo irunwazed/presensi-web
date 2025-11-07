@@ -301,7 +301,11 @@ export const getAccount = (username: string):Account|null => {
             phManufacturer: "Xiaomi",
             phModel: "M2103K19G",
             phProduct: "camellian_id",
-            home: [],
+            home: [{
+                nama: "Rumah",
+                latitude: -6.3013875,
+                longitude: 107.0105521
+            }],
         },
         {
             name:"Norman",
