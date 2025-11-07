@@ -351,6 +351,18 @@ export const getAccount = (username: string):Account|null => {
             phProduct: "viva_id",
             home: [],
         },
+        {
+            name:"IKA SETIOWATI",
+            username: "198608202008122001",
+            password: "",
+            token: "",
+            phId: "81bdcf5eb411edf5",
+            phType: "GSM",
+            phManufacturer: "samsung",
+            phModel: "SM-N770F",
+            phProduct: "r7nsxx",
+            home: [],
+        },
         // {
         //     name:"",
         //     username: "",
