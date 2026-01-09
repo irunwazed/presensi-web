@@ -46,6 +46,10 @@ const isMonday = day === 1;
         }
     };
 
+    const sleep = (ms: number): Promise<void> => {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+    };
+
     btnPresensi.addEventListener("click", async () => {
         // Tampilkan loading
         Swal.fire({
@@ -59,7 +63,7 @@ const isMonday = day === 1;
 
         try {
             const workfrom = formWorkFrom.value == "WFA" ? "WFA" : "WFO";
-
+            await sleep(1500); // Simulasi delay
             const data = await servicePresensi(workfrom);
             Swal.close(); // Tutup loading
 
